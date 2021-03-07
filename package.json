@@ -8,17 +8,19 @@
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
     "axios": "^0.21.1",
+    "electron-is-dev": "^2.0.0",
     "lodash.debounce": "^4.0.8",
     "node-sass": "^5.0.0",
     "popcorn-api": "^1.1.1",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-icons": "^4.2.0",
-    "react-player": "^2.9.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.3",
     "styled-components": "^5.2.1",
-    "web-vitals": "^1.0.1"
+    "vlc-command": "^1.2.0",
+    "web-vitals": "^1.0.1",
+    "webtorrent": "^0.115.2"
   },
   "main": "public/main.js",
   "homepage": "./",
@@ -28,7 +30,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "electron:serve": "concurrently -k \"cross-env BROWSER=none yarn start\" \"yarn electron:start\"",
-    "electron:build": "",
+    "electron:build": "yarn build && electron-builder -c.extraMetadata.main=build/main.js",
     "electron:start": "wait-on tcp:3000 && electron ."
   },
   "eslintConfig": {
@@ -36,6 +38,19 @@
       "react-app",
       "react-app/jest"
     ]
+  },
+  "build": {
+    "extends": null,
+    "appId": "com.fy.projecttorent",
+    "files": [
+      "dist/**/*",
+      "build/**/*",
+      "node_modules/**/*",
+      "package.json"
+    ],
+    "directories": {
+      "buildResources": "assets"
+    }
   },
   "browserslist": {
     "production": [

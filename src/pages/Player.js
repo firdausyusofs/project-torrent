@@ -1,8 +1,14 @@
-import ReactPlayer from 'react-player'
+function Player({location: {state}, history}) {
 
-function Player() {
+    if (!state) {
+        history.push('/')
+        return <></>
+    }
+
     return (
-        <ReactPlayer url='https://www.youtube.com/watch?v=ysz5S6PUM-U' />
+        <div id="video-player">
+            <video src={state.url} controls autoPlay></video>
+        </div>
     )
 }
 

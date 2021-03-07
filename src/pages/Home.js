@@ -20,7 +20,7 @@ function Home({location: {state}}) {
             window.innerHeight + document.documentElement.scrollTop
             === document.documentElement.offsetHeight
         ) {
-            axios.get('http://localhost:5000/movies/2', {
+            axios.get(`https://project-time.herokuapp.com/movies/${context.moviePage}`, {
             headers: {
                 'content-type': 'application/json',
                 'Access-Control-Allow-Origin': '*'
@@ -34,10 +34,14 @@ function Home({location: {state}}) {
                 var movies = context.movies
 
                 res.data.data.forEach(movie => {
-                    movies.push(movie)
+                    var check = movies.filter(a => a.title === movie.title).length
+
+                    if(!check) {
+                        movies.push(movie)
+                    }
                 })
 
-                setContext(state => ({...state, 'movies': movies}))
+                setContext(state => ({...state, 'movies': movies, 'moviePage': state.moviePage+1}))
             })
             .catch(err => {
                 // setIsLoading(false)
@@ -49,7 +53,7 @@ function Home({location: {state}}) {
     useEffect(() => {
         if (context.movies.length === 0 && context.isActive === 0) {
             setIsLoading(true)
-            axios.get('http://localhost:5000/movies/1', {
+            axios.get(`https://project-time.herokuapp.com/movies/${context.moviePage}`, {
             headers: {
                 'content-type': 'application/json',
                 'Access-Control-Allow-Origin': '*'
@@ -60,7 +64,7 @@ function Home({location: {state}}) {
             })
             .then(res => {
                 setIsLoading(false)
-                setContext(state => ({...state, 'movies': res.data.data}))
+                setContext(state => ({...state, 'movies': res.data.data, 'moviePage': state.moviePage+1}))
             })
             .catch(err => {
                 setIsLoading(false)
@@ -68,7 +72,7 @@ function Home({location: {state}}) {
             })
         } else if (context.shows.length === 0 && context.isActive === 1) {
             setIsLoading(true)
-            axios.get('http://localhost:5000/shows/1', {
+            axios.get('https://project-time.herokuapp.com/shows/1', {
             headers: {
                 'content-type': 'application/json',
                 'Access-Control-Allow-Origin': '*'

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect, useContext } from "react"
 import { FaArrowLeft, FaStar, FaPlay, FaDownload } from "react-icons/fa"
 import { Link } from "react-router-dom"
 
@@ -19,16 +19,47 @@ import {
     MovieDetailInner
 } from "../styles/Movie"
 
+import TorrentDetail from "../components/TorrentDetail"
+
+const ipcRenderer = window.require('electron').ipcRenderer
+
 function Movie({location: {state}, history}) {
     const [isActive, setIsActive]= useState(0)
+    const [isPlaying, setIsPlaying]= useState(false)
+    const [downloadPercentage, setDownloadPercentage] = useState(0)
+    const [isConnecting, setIsConnecting] = useState(true)
+
+    useEffect(() => {
+        ipcRenderer.on('torrent:info', (evt, args) => {
+            setIsConnecting(false)
+            setDownloadPercentage(args*100)
+        })
+
+        ipcRenderer.on('torrent:play', (evt, args) => {
+            setIsPlaying(false)
+            setIsConnecting(true)
+            history.push({pathname: '/player', state: {url: args}})
+        })
+    }, [])
 
     if (!state) {
         history.push('/')
         return <></>
     }
 
+    const playTorrent = () => {
+        setIsPlaying(true)
+        ipcRenderer.send('start:torent', state[state.type].torrents.en[Object.keys(state[state.type].torrents.en)[isActive]].url)
+    }
+
+    const stopTorrent = () => {
+        setIsPlaying(false)
+        ipcRenderer.send('stop:torrent', null)
+    }
+
     return (
         <MovieHolder>
+            {isPlaying && <TorrentDetail stopTorrent={stopTorrent} isConnecting={isConnecting} downloadPercentage={downloadPercentage} />}
             <MovieDetails>
                 <MovieTopDetails>
                     <MovieBackButton onClick={() => history.goBack()}>
@@ -54,7 +85,7 @@ function Movie({location: {state}, history}) {
                     </MovieDetailInner>
                 </MovieTopDetails>
                 <MovieButtonHolder>
-                    <MovieButton isPlay={true}>
+                    <MovieButton isPlay={true} onClick={playTorrent}>
                         <div>
                             <FaPlay color="#fff" />
                         </div>
