@@ -38,6 +38,11 @@ function createWindow () {
 var _torrent;
 var _cp;
 
+var _format = [
+  'mkv',
+  'mp4'
+]
+
 ipcMain.on('start:torent', (evt, args) => {
   console.log(args)
   if (args !== undefined) {
@@ -46,13 +51,55 @@ ipcMain.on('start:torent', (evt, args) => {
 
       torrent.createServer().listen(9900)
 
+      var _idx;
+      var _subIdx;
+      var _sent = false;
+    
+      torrent.files.forEach((file, idx) => {
+        // console.log(file)
+        var ext = file.name.split('.')
+
+        // console.log(file.name.endsWith('.srt'))
+    
+        if (_subIdx === undefined)
+          _subIdx = file.name.endsWith('.srt') ? idx : null;
+
+        // console.log(file.name.endsWith('.srt') ? idx : null)
+
+        if (_idx === undefined)
+          _idx = _format.indexOf(ext[ext.length-1]) !== -1 ? idx : null;
+      })
+
       torrent.on('download', function () {
         evt.sender.send('torrent:info', torrent.progress)
-        console.log(torrent.progress*100)
+        // console.log(torrent.progress*100)
+        // console.warn(_subIdx)
 
         if (Math.round(torrent.progress*100) === 5) {
-          console.info('send url to play')
-          evt.sender.send('torrent:play', `http://localhost:9900/0`)
+          // console.info('send url to play')
+          if (!_sent) {
+            // evt.sender.send('torrent:play', {
+            //   vidUrl: `http://localhost:9900/${_idx}`,
+            //   subUrl: `http://localhost:9900/${_subIdx}`
+            // })
+
+            vlcCommand((err, vlcPath) => {
+              if (err) {
+                console.error(err);
+                return
+              }
+      
+              console.log(_idx)
+      
+              _cp = spawn(vlcPath, [
+                '--play-and-exit',
+                '--quiet',
+                `http://localhost:9900/${_idx}`
+              ])
+            })
+
+            _sent = true
+          }
         }
       })
 
@@ -62,18 +109,26 @@ ipcMain.on('start:torent', (evt, args) => {
       //     return
       //   }
 
+      //   console.log(_idx)
+
       //   _cp = spawn(vlcPath, [
       //     '--play-and-exit',
       //     '--quiet',
-      //     `http://localhost:9900/0`
+      //     `http://localhost:9900/${_idx}`
       //   ])
       // })
     })
   }
 })
 
+const stopTorrent = () => {
+  console.log(_torrent)
+  if (_torrent)
+    _torrent.destroy()
+}
+
 ipcMain.on('stop:torrent', (evt, args) => {
-  _torrent.destroy()
+  stopTorrent()
   // _cp.kill('SIGINT');
 })
 
@@ -88,6 +143,10 @@ app.whenReady().then(() => {
     // dock icon is clicked and there are no other windows open.
     if (BrowserWindow.getAllWindows().length === 0) createWindow()
   })
+})
+
+app.on('before-quit', () => {
+  stopTorrent()
 })
 
 // Quit when all windows are closed, except on macOS. There, it's common

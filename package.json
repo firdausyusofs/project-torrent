@@ -1,6 +1,6 @@
 {
   "name": "project-torrent",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "private": true,
   "dependencies": {
     "@electron/remote": "^1.0.4",
@@ -30,7 +30,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "electron:serve": "concurrently -k \"cross-env BROWSER=none yarn start\" \"yarn electron:start\"",
-    "electron:build": "yarn build && electron-builder -c.extraMetadata.main=build/main.js",
+    "electron:build": "yarn build && electron-builder -w -c.extraMetadata.main=build/main.js",
     "electron:start": "wait-on tcp:3000 && electron ."
   },
   "eslintConfig": {
@@ -48,6 +48,12 @@
       "node_modules/**/*",
       "package.json"
     ],
+    "mac": {
+      "icon": "build/icon.png"
+    },
+    "win": {
+      "icon": "build/icon.png"
+    },
     "directories": {
       "buildResources": "assets"
     }

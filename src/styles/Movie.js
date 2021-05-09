@@ -131,6 +131,22 @@ export const MovieButtonHolder = styled.div`
     column-gap: 20px;
 `
 
+export const QualitySelector = styled.div`
+    // width: 70%;
+    // height: 200px;
+    padding: 15px;
+    background: #fff;
+    position: absolute;
+    box-shadow: 0 0 15px rgba(0,0,0,.1);
+    bottom: calc(100% + 20px);
+    left: 50%;
+    border-radius: 15px;
+    transform: translateX(-50%);
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.25s ease-in-out;
+`
+
 export const MovieButton = styled.div`
     padding: 20px 25px;
     background: #f3f3f3;
@@ -139,14 +155,25 @@ export const MovieButton = styled.div`
     cursor: pointer;
     display: flex;
     align-items: center;
+    position: relative;
+    justify-content: space-between;
 
-    div {
+    span {
+        display: flex;
+        align-items: center;
+    }
+
+    .circle {
         padding: 12px;
         background: ${props => props.isPlay ? 'rgb(227, 64, 62)' : 'transparent'};
         display: flex;
         align-items: center;
         justify-content: center;
         border-radius: 100%;
+
+        &.selector {
+            background: #d9d9d9;
+        }
     }
 
     h3 {
@@ -158,7 +185,17 @@ export const MovieButton = styled.div`
     &:hover {
         box-shadow: 0 0 15px rgba(0,0,0,.1);
         background: white;
+
+        ${QualitySelector} {
+            opacity: 1;
+            visibility: visible;
+        }
     }
+
+    ${props => props.isActive ? `
+        box-shadow: 0 0 15px rgba(0,0,0,.1);
+        background: white;
+    `: ``}
 `
 
 export const MovieQualityToggleHolder = styled.div`
@@ -184,4 +221,140 @@ export const MovieQualityToggle = styled.p`
         }`
     }
 
+    &:last-child {
+        margin: 0;
+    }
+
+`
+
+export const EpisodesHolder = styled.div`
+    // min-width: 100%:
+    // flex-basis: 30%;
+    width: 100%;
+    // height: 100vh;
+    height: 100%;
+    // background: #f5f5f5;
+    background: rgba(243,243,243,.7);
+    backdrop-filter: blur(10px);
+    overflow: auto;
+    z-index: 500;
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    flex-direction: column;
+    padding: 30px;
+    transition: all 0.25s ease-in-out;
+
+    ${props => !props.isActive ? `
+        opacity: 0;
+        visibility: hidden;
+    ` : `
+        opacity: 1;
+        visibility: visible;
+    `}
+`
+
+export const TopBarEpisode = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    svg {
+        cursor: pointer;
+    }
+`
+
+export const SeasonTitle = styled.div`
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    position: relative;
+
+    &:hover {
+
+        div {
+            visibility: visible;
+            opacity: 1;
+        }
+    }
+
+    h3 {
+        font-weight: 600;
+        color: rgb(31, 33, 32);
+        margin-right: 10px;
+    }
+`
+
+export const SeasonDropdown = styled.div`
+    width: 250px;
+    max-height: 300px;
+    overflow: auto;
+    background: #fff;
+    border-radius: 10px;
+    position: absolute;
+    top: calc(100% + 10px);
+    transition: all 0.25s ease-in;
+    left: 0;
+    opacity: 0;
+    visibility: hidden;
+    box-shadow: 0 0 15px rgba(0,0,0,.1);
+
+    p {
+        padding: 10px 15px;
+        margin: 10px;
+        transition: all 0.25s ease-in-out;
+        border-radius: 10px;
+
+        &.active {
+            color: rgb(227, 64, 62);
+        }
+
+        &:hover {
+            background: #e9e9e9;
+        }
+    }
+`
+
+export const EpisodeList = styled.div`
+    margin-top: 20px;
+    // background: red;
+    flex-grow: 1;
+`
+
+export const Episode = styled.div`
+    padding: 10px 15px;
+    background: #fff;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    // box-shadow: 0 0 15px rgba(0,0,0,.1);
+    border-radius: 15px;
+    margin-top: 20px;
+    color: rgb(31, 33, 32);
+    // max-height: 100%;
+    cursor: pointer;
+
+    h3 {
+        font-weight: 500;
+        font-size: 17px;
+        color: ${props => props.isActive ? "rgb(227, 64, 62)" : ""}
+    }
+
+    .circle {
+        width: 30px;
+        height: 30px;
+        background: ${props => props.isActive ? "rgb(227, 64, 62)" : "#ccc"};
+        border-radius: 100%;
+        margin-right: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: ${props => props.isActive ? "#fff" : "rgb(31, 33, 32)"};
+        font-weight: 600;
+    }
+
+    &:hover {
+        box-shadow: 0 0 10px rgba(0,0,0,.1);
+    }
 `

@@ -3,16 +3,21 @@ import axios from "axios"
 import {Link} from "react-router-dom"
 import debounce from "lodash.debounce"
 
+import {FaChevronDown} from "react-icons/fa"
+
 import {htmlDecode} from "../utils/utils"
 
 import MovieContext from "../utils/Context"
 
-import {MovieHolder, MovieInfo, MovieItem, MovieTitle} from "../styles/Home"
+import {MovieHolder, MovieInfo, MovieItem, MovieTitle, TopBar, TopBarDropdown, TopBarHolder, NoResultHolder} from "../styles/Home"
 
 import Loading from "../components/Loading"
 
+import { Genres, Sorts, GetData, type } from "../utils/config"
+
 function Home({location: {state}}) {
     const [isLoading, setIsLoading] = useState(false);
+    const [isBack, setIsBack] = useState(state !== undefined ? state.isBack : false)
     const [context, setContext] = useContext(MovieContext)
 
     window.onscroll = debounce(() => {
@@ -20,81 +25,61 @@ function Home({location: {state}}) {
             window.innerHeight + document.documentElement.scrollTop
             === document.documentElement.offsetHeight
         ) {
-            axios.get(`https://project-time.herokuapp.com/movies/${context.moviePage}`, {
-            headers: {
-                'content-type': 'application/json',
-                'Access-Control-Allow-Origin': '*'
-                // 'Access-Control-Allow-Origin': true,
-                // 'User-Agent': 'PostmanRuntime/7.26.10',
-                // 'Accept': '*/*',
-            }
-            })
-            .then(res => {
-                // setIsLoading(false)
-                var movies = context.movies
-
-                res.data.data.forEach(movie => {
-                    var check = movies.filter(a => a.title === movie.title).length
-
-                    if(!check) {
-                        movies.push(movie)
-                    }
-                })
-
-                setContext(state => ({...state, 'movies': movies, 'moviePage': state.moviePage+1}))
-            })
-            .catch(err => {
-                // setIsLoading(false)
-                console.log(err)
-            })
+            GetData(context, setContext, setIsLoading, true)
         }
     }, 100)
 
     useEffect(() => {
-        if (context.movies.length === 0 && context.isActive === 0) {
+        if (context[type[context.isActive]].length === 0) {
             setIsLoading(true)
-            axios.get(`https://project-time.herokuapp.com/movies/${context.moviePage}`, {
-            headers: {
-                'content-type': 'application/json',
-                'Access-Control-Allow-Origin': '*'
-                // 'Access-Control-Allow-Origin': true,
-                // 'User-Agent': 'PostmanRuntime/7.26.10',
-                // 'Accept': '*/*',
-            }
-            })
-            .then(res => {
-                setIsLoading(false)
-                setContext(state => ({...state, 'movies': res.data.data, 'moviePage': state.moviePage+1}))
-            })
-            .catch(err => {
-                setIsLoading(false)
-                console.log(err)
-            })
-        } else if (context.shows.length === 0 && context.isActive === 1) {
-            setIsLoading(true)
-            axios.get('https://project-time.herokuapp.com/shows/1', {
-            headers: {
-                'content-type': 'application/json',
-                'Access-Control-Allow-Origin': '*'
-                // 'Access-Control-Allow-Origin': true,
-                // 'User-Agent': 'PostmanRuntime/7.26.10',
-                // 'Accept': '*/*',
-            }
-            })
-            .then(res => {
-                setIsLoading(false)
-                setContext(state => ({...state, 'shows': res.data.data}))
-            })
-            .catch(err => {
-                setIsLoading(false)
-                console.log(err)
-            })
+            GetData(context, setContext, setIsLoading, false)
         }
     }, [context.isActive])
 
+    useEffect(() => {
+        // alert("lala");
+        // alert(isBack)
+        if (!isBack || context.search !== false) {
+            // alert("lala");
+            setContext(state => ({...state, [type[context.isActive]]: [], [`${type[context.isActive].slice(0, -1)}Page`]: 1}))
+            if (context[type[context.isActive]].length > 0 || context.search !== false) {
+                setIsLoading(true)
+                GetData(context, setContext, setIsLoading, false, true)
+                setContext(state => ({...state, search: false}))
+            }
+        }
+    }, [context.sort, context.genre, context.search])
+
     return (
-        <div>
+        <div id="Home">
             {isLoading && <Loading />}
+            {!isLoading && context[type[context.isActive]].length === 0 && <NoResultHolder>
+                <h1>No Results to show</h1>
+            </NoResultHolder>}
+            {!isLoading && context[type[context.isActive]].length !== 0 && <TopBarHolder>
+                <h1>{context.isActive === 0 ? 'Movies' : 'TV Shows'}</h1>
+                <TopBar>
+                        <div class="inner-top-bar">
+                            <p>{context.sort}</p>
+                            <FaChevronDown color="rgb(134, 134, 134)" />
+                            <TopBarDropdown>
+                                {Sorts.map((sort, idx) => (
+                                    <p onClick={() => {setContext(state => ({...state, sort})); setIsBack(false)}} className={context.sort === sort ? "active" : ""} key={idx}>{sort}</p>
+                                ))}
+                            </TopBarDropdown>
+                        </div>
+                        <div class="inner-top-bar">
+                            <p>{context.genre} {context.genre === "All" ? "categories" : ""}</p>
+                            <FaChevronDown color="rgb(134, 134, 134)" />
+                            <TopBarDropdown>
+                                {Genres.map((genre, idx) => (
+                                    <p onClick={() => {setContext(state => ({...state, genre})); setIsBack(false)}} className={context.genre === genre ? "active" : ""} key={idx}>{genre}</p>
+                                ))}
+                            </TopBarDropdown>
+                        </div>
+                    </TopBar>
+                </TopBarHolder>
+            }
             <MovieHolder>
                 {context.movies.length > 0 && context.isActive === 0 && context.movies.map((movie, idx) => (
                     <Link key={idx} title={movie.title} to={{

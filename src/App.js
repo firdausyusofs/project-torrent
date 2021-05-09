@@ -12,7 +12,16 @@ import Player from "./pages/Player"
 import Header from "./components/Header"
 
 function App() {
-  const [context, setContext] = useState({movies: [], shows: [], isActive: 0, moviePage: 1});
+  const [context, setContext] = useState({
+                                  movies: [], 
+                                  shows: [], 
+                                  isActive: 0, 
+                                  moviePage: 1,
+                                  showPage: 1,
+                                  sort: "Trending",
+                                  genre: "All",
+                                  search: false
+                                });
 
   return (
       <MovieContext.Provider value={[context, setContext]}>
