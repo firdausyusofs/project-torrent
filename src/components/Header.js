@@ -1,6 +1,7 @@
 import { useContext, useState } from "react"
+import { FaCog } from "react-icons/fa"
 
-import { HeaderHolder, HeaderLink, HeaderLinkHolder, HeaderTitle, SearchInput } from "../styles/Header"
+import { HeaderHolder, HeaderLink, HeaderLinkHolder, HeaderTitle, RightHolder, SearchInput } from "../styles/Header"
 
 import MovieContext from "../utils/Context"
 
@@ -32,7 +33,10 @@ function Header({history}) {
                         Tv Shows
                     </HeaderLink>
                 </div>
-                <SearchInput placeholder="Search..." onChange={e => setKeywords(e.target.value)} value={keywords} onKeyDown={onSearch} />
+                <RightHolder>
+                    <SearchInput placeholder="Search..." onChange={e => setKeywords(e.target.value)} value={keywords} onKeyDown={onSearch} />
+                    <FaCog color="rgba(255,255,255,.6)" size={20} onClick={() => setContext(state => ({...state, theme: state.theme === "light" ? "dark" : "light"}))} />
+                </RightHolder>
             </HeaderLinkHolder>
         </HeaderHolder>
     )

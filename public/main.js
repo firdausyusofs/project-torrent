@@ -79,8 +79,8 @@ ipcMain.on('start:torent', (evt, args) => {
           // console.info('send url to play')
           if (!_sent) {
             // evt.sender.send('torrent:play', {
-            //   vidUrl: `http://localhost:9900/${_idx}`,
-            //   subUrl: `http://localhost:9900/${_subIdx}`
+            //   vidUrl: `http://127.0.0.1:9900/${_idx}`,
+            //   subUrl: `http://127.0.0.1:9900/${_subIdx}`
             // })
 
             vlcCommand((err, vlcPath) => {
@@ -122,7 +122,7 @@ ipcMain.on('start:torent', (evt, args) => {
 })
 
 const stopTorrent = () => {
-  console.log(_torrent)
+  // console.log(_torrent)
   if (_torrent)
     _torrent.destroy()
 }

@@ -1,18 +1,17 @@
-function Player({location: {state}, history}) {
+import React from "react";
+import VideoPlayer from "../components/VideoPlayer";
 
-    if (!state) {
-        history.push('/')
-        return <></>
-    }
+function Player({ location: { state }, history }) {
+  if (!state) {
+    history.push("/");
+    return <></>;
+  }
 
-    return (
-        <div id="video-player">
-            <video src={state.vidUrl} preload="auto" controls autoPlay>
-                <source src={state.vidUrl} type="video/mp4" />
-                {/* <track label="English" kind="subtitles" srclang="en" src={state.subUrl} default /> */}
-            </video>
-        </div>
-    )
+  return (
+    <div id="video-player">
+      <VideoPlayer src={state.vidUrl} controls={true} autoplay={true} />
+    </div>
+  );
 }
 
-export default Player
+export default Player;
