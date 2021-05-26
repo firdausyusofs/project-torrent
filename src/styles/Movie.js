@@ -3,6 +3,11 @@ import styled from "styled-components"
 export const MovieHolder = styled.div`
     display: flex;
     max-height: calc(100vh - 100px);
+    position: fixed;
+    background: ${props => props.theme.body};
+    z-index: 2;
+    top: 100px;
+    left: 0;
 `
 
 export const MovieDetails = styled.div`
@@ -23,7 +28,7 @@ export const MovieDetails = styled.div`
     h1 {
         font-size: 3em;
         margin-bottom: 20px;
-        color: rgb(31, 33, 32)
+        color: ${props => props.theme.color}; 
     }
 
     p {
@@ -86,17 +91,17 @@ export const MovieBackButton = styled.div`
     border-radius: 30px;
     align-items: center;
     padding: 15px 20px;
-    background: #f3f3f3;
+    background: ${props => props.theme.back};
     transition: all 0.25s ease-in-out;
 
     h3 {
         margin-left: 15px;
-        color: rgb(31, 33, 32);
+        color: ${props => props.theme.color};
     }
 
     &:hover {
-        box-shadow: 0 0 15px rgba(0,0,0,.1);
-        background: white;
+        box-shadow: 0 0 15px ${props => props.theme.backShadow};
+        background: ${props => props.theme.backHighlight};
     }
 `
 
@@ -106,7 +111,7 @@ export const MovieInfo = styled.div`
     align-items: center;
 
     p {
-        color: rgb(31, 33, 32);
+        color: ${props => props.theme.color}; 
         line-height: auto;
         font-weight: bold;
         margin-right: 10px;
@@ -135,12 +140,15 @@ export const QualitySelector = styled.div`
     // width: 70%;
     // height: 200px;
     padding: 15px;
-    background: #fff;
+    background: ${props => props.theme.body};
     position: absolute;
-    box-shadow: 0 0 15px rgba(0,0,0,.1);
-    bottom: calc(100% + 20px);
+    box-shadow: 0 0px 15px ${props => props.theme.backShadow};
+    bottom: calc(100%);
     left: 50%;
     border-radius: 15px;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0; 
+    z-index: 100;
     transform: translateX(-50%);
     opacity: 0;
     visibility: hidden;
@@ -149,7 +157,7 @@ export const QualitySelector = styled.div`
 
 export const MovieButton = styled.div`
     padding: 20px 25px;
-    background: #f3f3f3;
+    background: ${props => props.theme.back};
     transition: all 0.25s ease-in-out;
     border-radius: 10px;
     cursor: pointer;
@@ -165,26 +173,26 @@ export const MovieButton = styled.div`
 
     .circle {
         padding: 12px;
-        background: ${props => props.isPlay ? 'rgb(227, 64, 62)' : 'transparent'};
+        background: ${props => props.isPlay ? props.theme.header  : 'transparent'};
         display: flex;
         align-items: center;
         justify-content: center;
         border-radius: 100%;
 
         &.selector {
-            background: #d9d9d9;
+            background: ${props => props.theme.circle};
         }
     }
 
     h3 {
-        color: rgb(31, 33, 32);
+        color: ${props => props.theme.color};
         margin-left: 10px;
         font-weight: 500;
     }
 
     &:hover {
-        box-shadow: 0 0 15px rgba(0,0,0,.1);
-        background: white;
+        box-shadow: 0 0 15px ${props => props.theme.backShadow};
+        background: ${props => props.theme.backHighlight};
 
         ${QualitySelector} {
             opacity: 1;
@@ -193,8 +201,8 @@ export const MovieButton = styled.div`
     }
 
     ${props => props.isActive ? `
-        box-shadow: 0 0 15px rgba(0,0,0,.1);
-        background: white;
+        box-shadow: 0 0 15px ${props.theme.backShadow};
+        background: ${props.theme.backHighlight};
     `: ``}
 `
 
@@ -208,7 +216,7 @@ export const MovieQualityToggle = styled.p`
     padding: 10px 15px;
     margin-right: 10px;
     background: ${props => props.isActive ? 'rgb(227, 64, 62)' : ''};
-    color: ${props => props.isActive ? '#fff' : 'rgb(31, 33, 32)'} !important;
+    color: ${props => props.isActive ? '#fff' : props.theme.color} !important;
     border-radius: 30px;
     cursor: pointer;
     font-weight: 600;
@@ -217,7 +225,7 @@ export const MovieQualityToggle = styled.p`
     ${props => !props.isActive && 
         `&:hover {
             // box-shadow: 0 0 15px rgba(0,0,0,.1);
-            background: #F3F3F3;
+            background: ${props.theme.back} ;
         }`
     }
 
@@ -234,7 +242,7 @@ export const EpisodesHolder = styled.div`
     // height: 100vh;
     height: 100%;
     // background: #f5f5f5;
-    background: rgba(243,243,243,.7);
+    background: ${props => props.theme.episode};
     backdrop-filter: blur(10px);
     overflow: auto;
     z-index: 500;
@@ -281,7 +289,7 @@ export const SeasonTitle = styled.div`
 
     h3 {
         font-weight: 600;
-        color: rgb(31, 33, 32);
+        color: ${props => props.theme.color};
         margin-right: 10px;
     }
 `
@@ -290,7 +298,7 @@ export const SeasonDropdown = styled.div`
     width: 250px;
     max-height: 300px;
     overflow: auto;
-    background: #fff;
+    background: ${props => props.theme.dropdown};
     border-radius: 10px;
     position: absolute;
     top: calc(100% + 10px);
@@ -305,13 +313,14 @@ export const SeasonDropdown = styled.div`
         margin: 10px;
         transition: all 0.25s ease-in-out;
         border-radius: 10px;
+        color: ${props => props.theme.color};
 
         &.active {
             color: rgb(227, 64, 62);
         }
 
         &:hover {
-            background: #e9e9e9;
+            background: ${props => props.theme.dropdownHighlight};
         }
     }
 `
@@ -324,14 +333,14 @@ export const EpisodeList = styled.div`
 
 export const Episode = styled.div`
     padding: 10px 15px;
-    background: #fff;
+    background: ${props => props.theme.body};
     display: flex;
     align-items: center;
     width: 100%;
     // box-shadow: 0 0 15px rgba(0,0,0,.1);
     border-radius: 15px;
     margin-top: 20px;
-    color: rgb(31, 33, 32);
+    color: ${props => props.theme.color};
     // max-height: 100%;
     cursor: pointer;
 
@@ -344,13 +353,13 @@ export const Episode = styled.div`
     .circle {
         width: 30px;
         height: 30px;
-        background: ${props => props.isActive ? "rgb(227, 64, 62)" : "#ccc"};
+        background: ${props => props.isActive ? "rgb(227, 64, 62)" : props.theme.circle};
         border-radius: 100%;
         margin-right: 10px;
         display: flex;
         align-items: center;
         justify-content: center;
-        color: ${props => props.isActive ? "#fff" : "rgb(31, 33, 32)"};
+        color: ${props => props.isActive ? "#fff" : props.theme.color};
         font-weight: 600;
     }
 

@@ -39,9 +39,12 @@ export const type = [
     'shows'
 ]
 
+const prodUrl = "https://api.firdausyusof.com";
+const stagingUrl = "http://localhost:5000"
+
 export const GetData = (context, setContext, setIsLoading, isLoadMore = false, isFilter = false) => {
     // console.log(context[`${type[context.isActive].slice(0, -1)}Page`])
-    axios.get(`https://project-time.herokuapp.com/${type[context.isActive]}/${isFilter ? 1 : context[`${type[context.isActive].slice(0, -1)}Page`]}?sort=${context.sort}&genre=${context.genre}&keywords=${context.search ? context.search : ''}`, {
+    axios.get(`${prodUrl}/${type[context.isActive]}/${isFilter ? 1 : context[`${type[context.isActive].slice(0, -1)}Page`]}?sort=${context.sort}&genre=${context.genre}&keywords=${context.search ? context.search : ''}`, {
         headers: {
             'content-type': 'application/json',
             // 'Access-Control-Allow-Origin': '*'

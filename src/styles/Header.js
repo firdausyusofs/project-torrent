@@ -4,7 +4,8 @@ import styled from "styled-components"
 export const HeaderHolder = styled.div`
     height: 100px;
     width: 100%;
-    background: rgb(227, 64, 62);
+    background: ${props => props.theme.header};
+    // background: #882625;
     -webkit-app-region: drag;
     position: fixed;
     top: 0;
@@ -28,6 +29,7 @@ export const HeaderLinkHolder = styled.div`
     position: absolute;
     bottom: 0;
     justify-content: space-between;
+    align-items: center;
 
     div {
         display: flex;
@@ -53,5 +55,22 @@ export const SearchInput = styled.input`
     outline: none;
     padding: 10px 15px;
     width: 250px;
+    background: ${props => props.theme.search};
+    color: ${props => props.theme.color};
     font-weight: 600;
+`
+
+export const RightHolder = styled.div`
+    display: flex;
+    align-items: center;
+
+    svg {
+        margin-left: 15px;
+        cursor: pointer;
+        transition: fill 0.25s ease-in-out;
+
+        &:hover {
+            fill: #fff;
+        }
+    }
 `

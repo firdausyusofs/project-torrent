@@ -30,12 +30,12 @@ import {
 import TorrentDetail from "../components/TorrentDetail"
 import Loading from "../components/Loading"
 
-const shell = window.require('electron').shell;
-const ipcRenderer = window.require('electron').ipcRenderer
+// const shell = window.require('electron').shell;
+// const ipcRenderer = window.require('electron').ipcRenderer
 
 // const ipcRenderer = null
 
-function Movie({location: {state}, history}) {
+function Movie({history, ipcRenderer, shell, data: state, back}) {
     const [isActive, setIsActive]= useState(0)
     const [isPlaying, setIsPlaying]= useState(false)
     const [downloadPercentage, setDownloadPercentage] = useState(0)
@@ -45,7 +45,7 @@ function Movie({location: {state}, history}) {
     const [selectedEp, setSelectedEp] = useState(1)
     const [selectedSeasonDropdown, setSelectedSeasonDropdown] = useState(1)
     const [selectedSeason, setSelectedSeason] = useState(1)
-    const [isLoading, setIsLoading] = useState(false)
+    const [isLoading, setIsLoading] = useState(state.type === "show" ? true : false)
     // const [minSeason, setMinSeason] = useState(null)
     // const [maxSeason, setMaxSeason] = useState(null)
     const [seasons, setSeasons] = useState([])
@@ -62,7 +62,7 @@ function Movie({location: {state}, history}) {
             history.push({pathname: '/player', state: args})
         })
 
-        if (state !== undefined && state.type === "show") {
+        if (Object.keys(state).length > 0 && state.type === "show") {
             setIsLoading(true)
             axios.get(`https://project-time.herokuapp.com/show/${state[state.type].imdb_id}`, {
                 headers: {
@@ -115,13 +115,15 @@ function Movie({location: {state}, history}) {
                 setIsLoading(false)
                 console.log(err)
             })
+        } else if (state.type === "movie") {
+            setIsLoading(false)
         }
     }, [])
 
-    if (!state) {
-        history.push('/')
-        return <></>
-    }
+    // if (!state) {
+    //     history.push('/')
+    //     return <></>
+    // }
 
     const playTorrent = () => {
         setIsPlaying(true)
@@ -163,7 +165,8 @@ function Movie({location: {state}, history}) {
             <>
                 <MovieDetails>
                     <MovieTopDetails>
-                        <MovieBackButton onClick={() => history.push({pathname: '/', state: {isBack: true}})}>
+                        {/* <MovieBackButton onClick={() => history.push({pathname: '/', state: {isBack: true}})}> */}
+                        <MovieBackButton onClick={() => back()}>
                             <FaArrowLeft color="rgb(184, 186, 185)" />
                             <h3>Back</h3>
                         </MovieBackButton>

@@ -1,5 +1,11 @@
 import styled from "styled-components"
 
+export const Wrapper = styled.div`
+    padding: 40px;
+    background: ${props => props.theme.body};
+    position: relative;
+`
+
 export const MovieHolder = styled.div`
     // padding: 40px;
     display: grid;
@@ -52,7 +58,7 @@ export const TopBarHolder = styled.div`
     align-items: center;
 
     h1 {
-        color: rgb(31, 33, 32);
+        color: ${props => props.theme.color} ;
     }
 `
 
@@ -84,7 +90,7 @@ export const TopBar = styled.div`
 
         p {
             font-weight: 600;
-            color: rgb(31, 33, 32);
+            color: ${props => props.theme.color};
         }
     }
 `
@@ -93,7 +99,7 @@ export const TopBarDropdown = styled.div`
     width: 200px;
     position: absolute;
     // height: 250px;
-    background: #e9e9e9;
+    background: ${props => props.theme.dropdown};
     border-radius: 15px;
     top: calc(100% + 10px);
     right: 0;
@@ -117,7 +123,7 @@ export const TopBarDropdown = styled.div`
         }
 
         &:hover {
-            background: #dadada;
+            background: ${props => props.theme.dropdownHighlight};
         }
     }
 `
