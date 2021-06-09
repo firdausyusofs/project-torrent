@@ -1,0 +1,20 @@
+config:
+  target: "https://api.firdausyusof.com"
+  phases:
+    - duration: 60
+      arrivalRate: 5
+      name: Warm up
+    - duration: 120
+      arrivalRate: 5
+      rampTo: 100
+      name: Ramp up load
+    - duration: 600
+      arrivalRate: 60
+      name: Sustained load
+
+scenarios:
+  - name: "Get"
+    flow:
+      - get:
+          url: "/"
+      - think: 5

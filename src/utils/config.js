@@ -40,6 +40,7 @@ export const type = [
 ]
 
 const prodUrl = "https://api.firdausyusof.com";
+// const prodUrl = "https://project-time.herokuapp.com"
 const stagingUrl = "http://localhost:5000"
 
 export const GetData = (context, setContext, setIsLoading, isLoadMore = false, isFilter = false) => {
