@@ -26,19 +26,27 @@ export const MovieItem = styled.div`
     display: flex;
     align-items: flex-end;
     overflow: hidden;
+    position: relative;
+    cursor: pointer;
     transition: 0.25s all ease-in-out;
 
     &:hover {
-        transform: scale(1.05)
+        // transform: scale(1.05)
+        box-shadow: 0 0 0 3px #fff;
     }
 `
 
 export const MovieTitle = styled.div`
     width: 100%;
     padding: 20px;
-    background: rgba(0, 0, 0, .2);
+    background: rgba(0, 0, 0, .7);
     backdrop-filter: blur(10px);
+    position: absolute;
     color: #fff;
+    bottom: 0;
+    left: 0;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
 
     h2 {
         font-size: 20px;

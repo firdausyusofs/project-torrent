@@ -30,6 +30,8 @@ function createWindow () {
       : `file://${path.join(__dirname, '../build/index.html')}`
   )
 
+  mainWindow.setMenuBarVisibility(false)
+
   mainWindow.webContents.send('start', 'lala')
   // Open the DevTools.
   // mainWindow.webContents.openDevTools()

@@ -56,7 +56,7 @@ export const MovieTopDetails = styled.div`
 
 export const MovieDetailInner = styled.div`
     flex-grow: 1;
-    overflow: scroll;
+    overflow: auto;
     max-height: 100%;
     // margin-left: 100%;
 `
@@ -160,6 +160,7 @@ export const MovieButton = styled.div`
     background: ${props => props.theme.back};
     transition: all 0.25s ease-in-out;
     border-radius: 10px;
+    opacity: ${props => props.isDisable ? 0.2 : 1};
     cursor: pointer;
     display: flex;
     align-items: center;
@@ -199,6 +200,7 @@ export const MovieButton = styled.div`
             visibility: visible;
         }
     }
+
 
     ${props => props.isActive ? `
         box-shadow: 0 0 15px ${props.theme.backShadow};

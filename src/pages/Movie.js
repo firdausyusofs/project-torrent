@@ -231,7 +231,7 @@ function Movie({history, ipcRenderer, shell, data: state, back}) {
                                 <h3>Play Trailer</h3>
                             </span>
                         </MovieButton>
-                        <MovieButton isPlay={false}>
+                        <MovieButton isDisable={true} isPlay={false}>
                             <span>
                                 <div className="circle">
                                     <FaDownload color="rgb(184, 186, 185)" />

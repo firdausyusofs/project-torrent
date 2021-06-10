@@ -1,8 +1,8 @@
 export const htmlDecode = (input, full = true) => {
     var doc = new DOMParser().parseFromString(input, "text/html");
     if (!full) {
-        if (doc.documentElement.textContent.length > 13) {
-            return doc.documentElement.textContent.substring(0, 13) + '...';
+        if (doc.documentElement.textContent.length > 10) {
+            return doc.documentElement.textContent.substring(0, 10) + '...';
         }
     }
     return doc.documentElement.textContent;
