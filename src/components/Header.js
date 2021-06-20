@@ -1,9 +1,11 @@
 import { useContext, useState } from "react"
-import { FaCog } from "react-icons/fa"
+import { FaCog, FaChevronDown } from "react-icons/fa"
 
-import { HeaderHolder, HeaderLink, HeaderLinkHolder, HeaderTitle, RightHolder, SearchInput } from "../styles/Header"
+import { TopBarDropdown, HeaderFilterContainer, HeaderFilterHolder, HeaderFilterTitle, HeaderHolder, HeaderLink, HeaderLinkHolder, HeaderTitle, RightHolder, SearchInput } from "../styles/Header"
 
 import MovieContext from "../utils/Context"
+
+import { Genres, Sorts, GetData, type } from "../utils/config"
 
 function Header({history}) {
     const [context, setContext] = useContext(MovieContext)
@@ -38,6 +40,49 @@ function Header({history}) {
                     <FaCog color="rgba(255,255,255,.6)" size={20} onClick={() => setContext(state => ({...state, theme: state.theme === "light" ? "dark" : "light"}))} />
                 </RightHolder>
             </HeaderLinkHolder>
+            <HeaderFilterHolder>
+                <HeaderFilterTitle>{context.isActive === 0 ? "Movies" : "TV Shows"}</HeaderFilterTitle>
+                <HeaderFilterContainer>
+                    <div class="inner-top-bar">
+                        <p>{context.sort}</p>
+                        <FaChevronDown color="rgba(255,255,255,.85)" />
+                        <TopBarDropdown>
+                            {Sorts.map((sort, idx) => (
+                            <p
+                                onClick={() => {
+                                setContext((state) => ({ ...state, sort }));
+                                // setIsBack(false);
+                                }}
+                                className={context.sort === sort ? "active" : ""}
+                                key={idx}
+                            >
+                                {sort}
+                            </p>
+                            ))}
+                        </TopBarDropdown>
+                    </div>
+                    <div class="inner-top-bar">
+                    <p>
+                        {context.genre} {context.genre === "All" ? "categories" : ""}
+                    </p>
+                    <FaChevronDown color="rgba(255,255,255,.85)" />
+                    <TopBarDropdown>
+                        {Genres.map((genre, idx) => (
+                        <p
+                            onClick={() => {
+                            setContext((state) => ({ ...state, genre }));
+                            // setIsBack(false);
+                            }}
+                            className={context.genre === genre ? "active" : ""}
+                            key={idx}
+                        >
+                            {genre}
+                        </p>
+                        ))}
+                    </TopBarDropdown>
+                    </div>
+                </HeaderFilterContainer>
+            </HeaderFilterHolder>
         </HeaderHolder>
     )
 }

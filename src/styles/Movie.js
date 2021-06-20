@@ -5,7 +5,7 @@ export const MovieHolder = styled.div`
     max-height: calc(100vh - 100px);
     position: fixed;
     background: ${props => props.theme.body};
-    z-index: 2;
+    z-index: 1000;
     top: 100px;
     left: 0;
 `

@@ -11,10 +11,11 @@ const client = new WebTorrent()
 
 require('@electron/remote/main').initialize()
 
+let mainWindow;
 function createWindow () {
   autoUpdater.checkForUpdates();
   // Create the browser window.
-  const mainWindow = new BrowserWindow({
+  mainWindow = new BrowserWindow({
     width: 1200,
     height: 800,
     titleBarStyle: 'hidden',
@@ -22,7 +23,8 @@ function createWindow () {
     //   preload: path.join(__dirname, 'preload.js'),
       nodeIntegration: true,
       enableRemoteModule: true,
-    }
+    },
+    show: false
   })
 
   // and load the index.html of the app.
@@ -34,7 +36,15 @@ function createWindow () {
 
   mainWindow.setMenuBarVisibility(false)
 
-  mainWindow.webContents.send('start', 'lala')
+  mainWindow.webContents.on('did-finish-load', () => {
+    if (loadingScreen != null) {
+      loadingScreen.close();
+      loadingScreen = null
+    }
+    mainWindow.show();
+  })
+
+  // mainWindow.webContents.send('start', 'lala')
   // Open the DevTools.
   // mainWindow.webContents.openDevTools()
 }
@@ -162,8 +172,39 @@ ipcMain.on('stop:torrent', (evt, args) => {
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
+let loadingScreen;
+const createLoadingScreen = () => {
+  loadingScreen = new BrowserWindow({
+    width: 350,
+    height: 250,
+    frame: false,
+    transparent: true
+  })
+
+  loadingScreen.loadURL(
+    `file://${path.join(__dirname, '../public/loading.html')}`
+  )
+
+  loadingScreen.setResizable(false)
+
+  loadingScreen.webContents.on('did-finish-load', () => {
+    loadingScreen.show();
+  })
+
+  // setTimeout(() => {
+  //   loadingScreen.close();
+  //   mainWindow.show();
+  // }, 5000)
+  // loadingScreen.show();
+}
+
+
 app.whenReady().then(() => {
-  createWindow()
+  createLoadingScreen()
+
+  setTimeout(() => {
+    createWindow()
+  }, 2000)
   
   app.on('activate', function () {
     // On macOS it's common to re-create a window in the app when the

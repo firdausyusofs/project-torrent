@@ -52,12 +52,15 @@ function Home({ location: { state } }) {
       setIsLoading(true);
       GetData(context, setContext, setIsLoading, false);
     }
+
+    setData({})
   }, [context.isActive]);
 
   useEffect(() => {
     // alert("lala");
     // alert(isBack)
     if (!isBack || context.search !== false) {
+      setData({})
       // alert("lala");
       setContext((state) => ({
         ...state,
@@ -97,7 +100,7 @@ function Home({ location: { state } }) {
           <h1>No Results to show</h1>
         </NoResultHolder>
       )}
-      {!isLoading && context[type[context.isActive]].length !== 0 && (
+      {/* {!isLoading && context[type[context.isActive]].length !== 0 && (
         <TopBarHolder>
           <h1>{context.isActive === 0 ? "Movies" : "TV Shows"}</h1>
           <TopBar>
@@ -141,7 +144,7 @@ function Home({ location: { state } }) {
             </div>
           </TopBar>
         </TopBarHolder>
-      )}
+      )} */}
       <MovieHolder>
         {context.movies.length > 0 &&
           context.isActive === 0 &&

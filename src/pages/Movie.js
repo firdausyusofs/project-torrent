@@ -29,6 +29,7 @@ import {
 
 import TorrentDetail from "../components/TorrentDetail"
 import Loading from "../components/Loading"
+import IsPlaying from "../components/IsPlaying"
 
 // const shell = window.require('electron').shell;
 // const ipcRenderer = window.require('electron').ipcRenderer
@@ -159,8 +160,9 @@ function Movie({history, ipcRenderer, shell, data: state, back}) {
 
     return (
         <MovieHolder>
+            {isPlaying && Math.round(downloadPercentage) >= 5 && <IsPlaying title={state[state.type].title} downloadPercentage={downloadPercentage} />}
             {isLoading && <Loading />}
-            {isPlaying && <TorrentDetail stopTorrent={stopTorrent} isConnecting={isConnecting} downloadPercentage={downloadPercentage} />}
+            {isPlaying && Math.round(downloadPercentage) < 5 && <TorrentDetail stopTorrent={stopTorrent} isConnecting={isConnecting} downloadPercentage={downloadPercentage} />}
             {!isLoading && (
             <>
                 <MovieDetails>
@@ -196,9 +198,9 @@ function Movie({history, ipcRenderer, shell, data: state, back}) {
                                 </div>
                                 <h3>Play {state.type === "movie" ? "Now" : `S${selectedSeason}  EP${selectedEp} `}</h3>
                             </span>
-                            <div className="circle selector">
+                            {/* <div className="circle selector">
                                 <FaChevronUp color="#333" size={20} />
-                            </div>
+                            </div> */}
                             {state.type === "show" && <QualitySelector>
                                 <MovieQualityToggleHolder>
                                     {Object.keys(show).length > 0 && Object.keys(getQuality().torrents).sort((a, b) => a.slice(0, -1) - b.slice(0, -1)).map((quality, idx) => {
