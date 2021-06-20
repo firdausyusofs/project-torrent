@@ -5,12 +5,14 @@ const WebTorrent = require('webtorrent')
 const spawn = require('child_process').spawn
 const vlcCommand = require('vlc-command')
 const isDev = require('electron-is-dev')
+const { autoUpdater } = require('electron-updater')
 
 const client = new WebTorrent()
 
 require('@electron/remote/main').initialize()
 
 function createWindow () {
+  autoUpdater.checkForUpdates();
   // Create the browser window.
   const mainWindow = new BrowserWindow({
     width: 1200,
@@ -44,6 +46,29 @@ var _format = [
   'mkv',
   'mp4'
 ]
+
+autoUpdater.on('checking-for-update', () => {
+  console.log("checking for update")
+})
+
+autoUpdater.on('update-available', (info) => {
+  console.log('Update available.');
+})
+autoUpdater.on('update-not-available', (info) => {
+  console.log('Update not available.');
+})
+autoUpdater.on('error', (err) => {
+  console.log('Error in auto-updater. ' + err);
+})
+// autoUpdater.on('download-progress', (progressObj) => {
+//   let log_message = "Download speed: " + progressObj.bytesPerSecond;
+//   log_message = log_message + ' - Downloaded ' + progressObj.percent + '%';
+//   log_message = log_message + ' (' + progressObj.transferred + "/" + progressObj.total + ')';
+//   sendStatusToWindow(log_message);
+// })
+autoUpdater.on('update-downloaded', (info) => {
+  autoUpdater.quitAndInstall();  
+});
 
 ipcMain.on('start:torent', (evt, args) => {
   console.log(args)

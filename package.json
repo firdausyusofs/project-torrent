@@ -1,7 +1,11 @@
 {
   "name": "project-torrent",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "private": true,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/firdausyusofs/project-torrent"
+  },
   "dependencies": {
     "@electron/remote": "^1.0.4",
     "@testing-library/jest-dom": "^5.11.4",
@@ -32,7 +36,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "electron:serve": "concurrently -k \"cross-env BROWSER=none yarn start\" \"yarn electron:start\"",
-    "electron:build": "yarn build && electron-builder -w --x64 -c.extraMetadata.main=build/main.js",
+    "electron:build": "yarn build && electron-builder -w --x64 -p always -c.extraMetadata.main=build/main.js",
     "electron:start": "wait-on tcp:3000 && electron ."
   },
   "eslintConfig": {
@@ -44,6 +48,10 @@
   "build": {
     "extends": null,
     "appId": "com.fy.projecttorent",
+    "productName": "Project Torrent",
+    "publish": [
+      "github"
+    ],
     "files": [
       "dist/**/*",
       "build/**/*",
@@ -76,7 +84,7 @@
     "concurrently": "^5.3.0",
     "cross-env": "^7.0.3",
     "electron": "^11.2.1",
-    "electron-builder": "^22.11.1",
+    "electron-builder": "^22.10.5",
     "wait-on": "^5.2.1"
   }
 }
