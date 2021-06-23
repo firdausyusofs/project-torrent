@@ -13,7 +13,6 @@ require('@electron/remote/main').initialize()
 
 let mainWindow;
 function createWindow () {
-  autoUpdater.checkForUpdates();
   // Create the browser window.
   mainWindow = new BrowserWindow({
     width: 1200,
@@ -66,6 +65,7 @@ autoUpdater.on('update-available', (info) => {
 })
 autoUpdater.on('update-not-available', (info) => {
   console.log('Update not available.');
+  createWindow();
 })
 autoUpdater.on('error', (err) => {
   console.log('Error in auto-updater. ' + err);
@@ -174,6 +174,7 @@ ipcMain.on('stop:torrent', (evt, args) => {
 // Some APIs can only be used after this event occurs.
 let loadingScreen;
 const createLoadingScreen = () => {
+  autoUpdater.checkForUpdates();
   loadingScreen = new BrowserWindow({
     width: 350,
     height: 250,
@@ -202,9 +203,9 @@ const createLoadingScreen = () => {
 app.whenReady().then(() => {
   createLoadingScreen()
 
-  setTimeout(() => {
-    createWindow()
-  }, 2000)
+  // setTimeout(() => {
+  //   createWindow()
+  // }, 2000)
   
   app.on('activate', function () {
     // On macOS it's common to re-create a window in the app when the
