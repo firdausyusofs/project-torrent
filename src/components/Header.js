@@ -6,8 +6,9 @@ import { TopBarDropdown, HeaderFilterContainer, HeaderFilterHolder, HeaderFilter
 import MovieContext from "../utils/Context"
 
 import { Genres, Sorts, GetData, type } from "../utils/config"
+import { Link } from "react-router-dom"
 
-function Header({history}) {
+function Header({history, location}) {
     const [context, setContext] = useContext(MovieContext)
     const [keywords, setKeywords] = useState("")
 
@@ -22,7 +23,7 @@ function Header({history}) {
             setContext(state => ({...state, search: keywords}))
         }
     }
-
+//setContext(state => ({...state, theme: state.theme === "light" ? "dark" : "light"}))
     return (
         <HeaderHolder>
             <HeaderTitle>FlashX</HeaderTitle>
@@ -37,10 +38,10 @@ function Header({history}) {
                 </div>
                 <RightHolder>
                     <SearchInput placeholder="Search..." onChange={e => setKeywords(e.target.value)} value={keywords} onKeyDown={onSearch} />
-                    <FaCog color="rgba(255,255,255,.6)" size={20} onClick={() => setContext(state => ({...state, theme: state.theme === "light" ? "dark" : "light"}))} />
+                    <Link to="/settings"><FaCog color="rgba(255,255,255,.6)" size={20} /></Link>
                 </RightHolder>
             </HeaderLinkHolder>
-            <HeaderFilterHolder>
+            {location.pathname !== "/settings" && <HeaderFilterHolder>
                 <HeaderFilterTitle>{context.isActive === 0 ? "Movies" : "TV Shows"}</HeaderFilterTitle>
                 <HeaderFilterContainer>
                     <div class="inner-top-bar">
@@ -82,7 +83,7 @@ function Header({history}) {
                     </TopBarDropdown>
                     </div>
                 </HeaderFilterContainer>
-            </HeaderFilterHolder>
+            </HeaderFilterHolder>}
         </HeaderHolder>
     )
 }

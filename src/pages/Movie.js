@@ -128,6 +128,8 @@ function Movie({history, ipcRenderer, shell, data: state, back}) {
 
     const playTorrent = () => {
         setIsPlaying(true)
+        setIsConnecting(true)
+        setDownloadPercentage(0)
         
         let _url
 
@@ -142,6 +144,8 @@ function Movie({history, ipcRenderer, shell, data: state, back}) {
 
     const stopTorrent = () => {
         setIsPlaying(false)
+        // setIsConnecting(true)
+        // setDownloadPercentage(0)
         ipcRenderer.send('stop:torrent', null)
     }
 

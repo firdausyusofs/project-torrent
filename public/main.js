@@ -7,7 +7,7 @@ const vlcCommand = require('vlc-command')
 const isDev = require('electron-is-dev')
 const { autoUpdater } = require('electron-updater')
 
-const client = new WebTorrent()
+var client = new WebTorrent()
 
 require('@electron/remote/main').initialize()
 
@@ -50,6 +50,7 @@ function createWindow () {
 
 var _torrent;
 var _cp;
+var _torrentId;
 
 var _format = [
   'mkv',
@@ -81,9 +82,11 @@ autoUpdater.on('update-downloaded', (info) => {
 });
 
 ipcMain.on('start:torent', (evt, args) => {
+  console.log(args)
   if (args !== undefined) {
-    client.add(args, torrent => {
+    client.add(args, {destroyStoreOnDestroy: true}, torrent => {
       _torrent = torrent
+      _torrentId = args
 
       torrent.createServer().listen(9900)
 
@@ -106,7 +109,24 @@ ipcMain.on('start:torent', (evt, args) => {
           _idx = _format.indexOf(ext[ext.length-1]) !== -1 ? idx : null;
       })
 
+      torrent.on('ready', function () {
+        console.log("ready")
+      })
+
+      torrent.on('noPeers', function (announceType) {
+        console.log(announceType)
+      })
+
+      torrent.on('infoHash', function () {
+        console.log('infohash')
+      })
+
+      torrent.on('wire', function (wire) {
+        console.log(wire)
+      })
+
       torrent.on('download', function () {
+        console.log("here")
         evt.sender.send('torrent:info', torrent.progress)
         // console.log(torrent.progress*100)
         // console.warn(_subIdx)
@@ -139,6 +159,10 @@ ipcMain.on('start:torent', (evt, args) => {
         }
       })
 
+      torrent.on('error', function(err) {
+        console.log(err)
+      })
+
       // vlcCommand((err, vlcPath) => {
       //   if (err) {
       //     console.error(err);
@@ -165,8 +189,12 @@ const stopTorrent = () => {
       _cp.kill();
     }
     
-    _torrent.destroy()
+    _torrent.destroy({destroyStore: true}, (err) => {
+      console.log(err)
+    })
+    // client.remove(_torrentId)
     client.destroy()
+    client = new WebTorrent()
   }
 }
 

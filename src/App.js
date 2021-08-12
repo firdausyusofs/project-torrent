@@ -8,6 +8,7 @@ import MovieContext from "./utils/Context";
 import Home from "./pages/Home";
 import Movie from "./pages/Movie";
 import Player from "./pages/Player";
+import Settings from "./pages/Settings"
 
 import Header from "./components/Header";
 import { ThemeProvider } from "styled-components";
@@ -41,6 +42,7 @@ function App() {
                     <Route path="/" component={Home} exact />
                     {/* <Route path="/movie/:id" component={Movie} exact /> */}
                     <Route path="/player" component={Player} exact />
+                    <Route path="/settings" component={Settings} exact />
                   </Switch>
                 </div>
               </>
