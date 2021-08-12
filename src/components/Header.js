@@ -25,7 +25,7 @@ function Header({history}) {
 
     return (
         <HeaderHolder>
-            <HeaderTitle>Project Torrent</HeaderTitle>
+            <HeaderTitle>FlashX</HeaderTitle>
             <HeaderLinkHolder>
                 <div>
                     <HeaderLink isActive={context.isActive === 0} onClick={() => changeLink(0)}>

@@ -81,7 +81,6 @@ autoUpdater.on('update-downloaded', (info) => {
 });
 
 ipcMain.on('start:torent', (evt, args) => {
-  console.log(args)
   if (args !== undefined) {
     client.add(args, torrent => {
       _torrent = torrent
@@ -160,8 +159,15 @@ ipcMain.on('start:torent', (evt, args) => {
 
 const stopTorrent = () => {
   // console.log(_torrent)
-  if (_torrent)
+  if (_torrent) {
+    if (_cp) {
+      _cp.stdin.pause();
+      _cp.kill();
+    }
+    
     _torrent.destroy()
+    client.destroy()
+  }
 }
 
 ipcMain.on('stop:torrent', (evt, args) => {
@@ -203,9 +209,11 @@ const createLoadingScreen = () => {
 app.whenReady().then(() => {
   createLoadingScreen()
 
-  // setTimeout(() => {
-  //   createWindow()
-  // }, 2000)
+  if (isDev) {
+    setTimeout(() => {
+      createWindow()
+    }, 2000)
+  }
   
   app.on('activate', function () {
     // On macOS it's common to re-create a window in the app when the

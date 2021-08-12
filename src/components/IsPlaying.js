@@ -2,7 +2,7 @@ import React from 'react';
 
 import {FaPlayCircle} from "react-icons/fa"
 
-const IsPlaying = ({title, downloadPercentage}) => {
+const IsPlaying = ({title, downloadPercentage, stopTorrent}) => {
 	return (
 		<div class="is-playing-container">
 			<div className="is-playing-overlay"></div>
@@ -14,7 +14,7 @@ const IsPlaying = ({title, downloadPercentage}) => {
 				</div>
 				<p className="text">Downloaded: <b>{Math.round(downloadPercentage)}%</b></p>
 
-				<div className="stop-btn">Stop</div>
+				<div className="stop-btn" onClick={stopTorrent}>Stop</div>
 			</div>
 		</div>
 	);

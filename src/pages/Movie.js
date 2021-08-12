@@ -65,7 +65,7 @@ function Movie({history, ipcRenderer, shell, data: state, back}) {
 
         if (Object.keys(state).length > 0 && state.type === "show") {
             setIsLoading(true)
-            axios.get(`https://project-time.herokuapp.com/show/${state[state.type].imdb_id}`, {
+            axios.get(`https://api.firdausyusof.com/show/${state[state.type].imdb_id}`, {
                 headers: {
                     'content-type': 'application/json',
                     // 'Access-Control-Allow-Origin': '*'
@@ -160,7 +160,7 @@ function Movie({history, ipcRenderer, shell, data: state, back}) {
 
     return (
         <MovieHolder>
-            {isPlaying && Math.round(downloadPercentage) >= 5 && <IsPlaying title={state[state.type].title} downloadPercentage={downloadPercentage} />}
+            {isPlaying && Math.round(downloadPercentage) >= 5 && <IsPlaying stopTorrent={stopTorrent} title={state[state.type].title} downloadPercentage={downloadPercentage} />}
             {isLoading && <Loading />}
             {isPlaying && Math.round(downloadPercentage) < 5 && <TorrentDetail stopTorrent={stopTorrent} isConnecting={isConnecting} downloadPercentage={downloadPercentage} />}
             {!isLoading && (
