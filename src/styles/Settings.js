@@ -26,10 +26,11 @@ const SettingsMain = styled.div`
 const SettingsTitle = styled.h1`
 	color: ${props => props.theme.color};
 	font-weight: 500;
+	margin-bottom: 40px;
 `
 
 const SettingsInner = styled.div`
-	margin-top: 60px;
+	margin-bottom: 60px;
 `
 
 const SettingsInnerTitle = styled.h3`
@@ -58,6 +59,11 @@ const AppearanceImageHolder = styled.div`
 	height: 100px;
 	border-radius: 5px;
 	box-shadow: ${props => props.active ? '0 0 0 2px ' + props.theme.header : 'none'};
+	overflow: hidden;
+
+	img {
+		width: 100%;
+	}
 `
 
 const AppearanceTitle = styled.p`
@@ -74,7 +80,7 @@ const FilePathHolder = styled.div`
 `
 
 const FilePathInput = styled.input`
-	padding: 15px 20px;
+	padding: 10px 20px;
 	outline: none;
 	border: none;
 	width: 300px;
@@ -83,7 +89,7 @@ const FilePathInput = styled.input`
 `
 
 const FilePathButton = styled.button`
-	padding: 15px;
+	padding: 10px 20px;
 	border: none;
 	outline: none;
 	font-weight: 600;

@@ -4,10 +4,8 @@ import styled from "styled-components"
 export const HeaderHolder = styled.div`
     // height: 100px;
     width: 100%;
-    padding-top: 30px;
     background: ${props => props.theme.header};
     // background: #882625;
-    -webkit-app-region: drag;
     position: fixed;
     top: 0;
     display: flex;
@@ -16,14 +14,48 @@ export const HeaderHolder = styled.div`
     z-index: 1000;
 `
 
+export const HeaderTitleHolder = styled.div`
+    // position: absolute;
+    -webkit-app-region: drag;
+    width: 100%;
+    padding: 0px 0px;
+    background: ${props => props.theme.circle};
+    // left: 50%;
+    top:0;
+    // transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+`;
+
+export const HeaderButtonHolder = styled.div`
+    height: 100%;
+    display: flex;
+    -webkit-app-region: no-drag;
+`;
+
+export const HeaderButton = styled.div`
+    height: 32px;
+    width: 46px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: ${props => props.theme.color};
+    
+    &:hover {
+        background: ${props => props.isClose ? "red" : props.theme.button};
+    }
+`;
+
 export const HeaderTitle = styled.h1`
-    color: #fff;
-    font-size: 17px;
+    color: ${props => props.theme.color};
+    margin-left: 20px;
+    font-size: 14px;
     font-weight: 500;
-    position: absolute;
-    left: 50%;
-    top: 10px;
-    transform: translateX(-50%);
+    // position: absolute;
+    // left: 50%;
+    // top: 10px;
+    // transform: translateX(-50%);
 `
 
 export const HeaderLinkHolder = styled.div`

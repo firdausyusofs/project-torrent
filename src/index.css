@@ -55,3 +55,11 @@ code {
     opacity: 0;
   }
 }
+
+*::-webkit-scrollbar {
+  display: none;
+}
+
+/* body::-webkit-scrollbar-track {
+  background: red;
+} */

@@ -6,10 +6,19 @@ const spawn = require('child_process').spawn
 const vlcCommand = require('vlc-command')
 const isDev = require('electron-is-dev')
 const { autoUpdater } = require('electron-updater')
+const fs = require('fs');
+const os = require('os')
 
 var client = new WebTorrent()
 
 require('@electron/remote/main').initialize()
+
+let TMP
+try {
+  TMP = path.join(fs.statSync('/tmp') && '/tmp', 'flashx')
+} catch (err) {
+  TMP = path.join(typeof os.tmpdir === 'function' ? os.tmpdir() : '/', 'flashx')
+}
 
 let mainWindow;
 function createWindow () {
@@ -18,6 +27,8 @@ function createWindow () {
     width: 1200,
     height: 800,
     titleBarStyle: 'hidden',
+    autoHideMenuBar: true,
+    frame: false,
     webPreferences: {
     //   preload: path.join(__dirname, 'preload.js'),
       nodeIntegration: true,
@@ -82,9 +93,8 @@ autoUpdater.on('update-downloaded', (info) => {
 });
 
 ipcMain.on('start:torent', (evt, args) => {
-  console.log(args)
   if (args !== undefined) {
-    client.add(args, {destroyStoreOnDestroy: true}, torrent => {
+    client.add(args.url, {destroyStoreOnDestroy: true, path: args.path ? args.path : TMP}, torrent => {
       _torrent = torrent
       _torrentId = args
 
@@ -110,23 +120,23 @@ ipcMain.on('start:torent', (evt, args) => {
       })
 
       torrent.on('ready', function () {
-        console.log("ready")
+        // console.log("ready")
       })
 
       torrent.on('noPeers', function (announceType) {
-        console.log(announceType)
+        // console.log(announceType)
       })
 
       torrent.on('infoHash', function () {
-        console.log('infohash')
+        // console.log('infohash')
       })
 
       torrent.on('wire', function (wire) {
-        console.log(wire)
+        // console.log(wire)
       })
 
       torrent.on('download', function () {
-        console.log("here")
+        // console.log("here")
         evt.sender.send('torrent:info', torrent.progress)
         // console.log(torrent.progress*100)
         // console.warn(_subIdx)

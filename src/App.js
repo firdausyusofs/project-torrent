@@ -26,6 +26,7 @@ function App() {
     genre: "All",
     search: false,
     theme: "dark",
+    path: ""
   });
 
   return (

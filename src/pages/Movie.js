@@ -27,6 +27,8 @@ import {
     QualitySelector
 } from "../styles/Movie"
 
+import MovieContext from "../utils/Context"
+
 import TorrentDetail from "../components/TorrentDetail"
 import Loading from "../components/Loading"
 import IsPlaying from "../components/IsPlaying"
@@ -37,6 +39,7 @@ import IsPlaying from "../components/IsPlaying"
 // const ipcRenderer = null
 
 function Movie({history, ipcRenderer, shell, data: state, back}) {
+	const [context, setContext] = useContext(MovieContext)
     const [isActive, setIsActive]= useState(0)
     const [isPlaying, setIsPlaying]= useState(false)
     const [downloadPercentage, setDownloadPercentage] = useState(0)
@@ -139,7 +142,7 @@ function Movie({history, ipcRenderer, shell, data: state, back}) {
             _url = getQuality().torrents[Object.keys(getQuality().torrents).sort((a, b) => a.slice(0, -1) - b.slice(0, -1))[isActive]].url
         }
 
-        ipcRenderer.send('start:torent', _url)
+        ipcRenderer.send('start:torent', {url: _url, path: context.path})
     }
 
     const stopTorrent = () => {

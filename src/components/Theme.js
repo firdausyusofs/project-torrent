@@ -12,6 +12,7 @@ export const lightTheme = {
     backShadow: "rgba(0,0,0,.1)",
     circle: "#d9d9d9",
     episode: "rgba(243,243,243,.7)",
+    button: "rgba(0,0,0,.05)"
     // subtitle: "rgb(31, 33, 32)"
 }
 
@@ -27,6 +28,7 @@ export const darkTheme = {
     backShadow: "#222",
     circle: "#292929",
     episode: "rgba(12,12,12,.7)",
+    button: "rgba(255,255,255,.05)"
 }
 
 export const GlobalStyles = createGlobalStyle`
