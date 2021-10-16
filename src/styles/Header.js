@@ -24,6 +24,7 @@ export const HeaderTitleHolder = styled.div`
     top:0;
     // transform: translateX(-50%);
     display: flex;
+    min-height: 32px;
     align-items: center;
     justify-content: space-between;
 `;
@@ -49,13 +50,15 @@ export const HeaderButton = styled.div`
 
 export const HeaderTitle = styled.h1`
     color: ${props => props.theme.color};
-    margin-left: 20px;
+    // margin-left: 20px;
     font-size: 14px;
     font-weight: 500;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
     // position: absolute;
     // left: 50%;
     // top: 10px;
-    // transform: translateX(-50%);
 `
 
 export const HeaderLinkHolder = styled.div`

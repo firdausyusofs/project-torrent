@@ -52,6 +52,7 @@ function createWindow () {
       loadingScreen = null
     }
     mainWindow.show();
+    mainWindow.webContents.send('platform:info', process.platform)
   })
 
   // mainWindow.webContents.send('start', 'lala')
@@ -162,6 +163,11 @@ ipcMain.on('start:torent', (evt, args) => {
                 '--quiet',
                 `http://localhost:9900/${_idx}`
               ])
+
+              _cp.on('exit', () => {
+                mainWindow.webContents.send('torrent:stopped')
+                stopTorrent()
+              })
             })
 
             _sent = true

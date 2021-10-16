@@ -66,6 +66,10 @@ function Movie({history, ipcRenderer, shell, data: state, back}) {
             history.push({pathname: '/player', state: args})
         })
 
+        ipcRenderer.on('torrent:stopped', () => {
+          setIsPlaying(false)
+        })
+
         if (Object.keys(state).length > 0 && state.type === "show") {
             setIsLoading(true)
             axios.get(`https://api.firdausyusof.com/show/${state[state.type].imdb_id}`, {
@@ -232,7 +236,7 @@ function Movie({history, ipcRenderer, shell, data: state, back}) {
                                 <MovieQualityToggle key={i} isActive={isActive === i} onClick={() => setIsActive(i)}>{k}</MovieQualityToggle>
                             ))}
                         </MovieQualityToggleHolder>}
-                        <MovieButton isPlay={false} onClick={() => shell.openExternal(state[state.type].trailer)}>
+                        <MovieButton isPlay={false} onClick={() => state[state.type].trailer && shell.openExternal(state[state.type].trailer)}>
                             <span>
                                 <div className="circle">
                                     <FaPlay color="rgb(184, 186, 185)" />

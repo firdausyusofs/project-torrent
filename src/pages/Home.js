@@ -21,6 +21,7 @@ import {
   TopBarHolder,
   NoResultHolder,
   Wrapper,
+  BottomLoading,
 } from "../styles/Home";
 
 import Loading from "../components/Loading";
@@ -37,13 +38,15 @@ function Home({ location: { state } }) {
   );
   const [context, setContext] = useContext(MovieContext);
   const [data, setData] = useState({});
+  const [isLoadingBottom, setIsLoadingBottom] = useState(false)
 
   window.onscroll = debounce(() => {
     if (
       window.innerHeight + document.documentElement.scrollTop ===
       document.documentElement.offsetHeight
     ) {
-      GetData(context, setContext, setIsLoading, true);
+      setIsLoadingBottom(true)
+      GetData(context, setContext, setIsLoadingBottom, true);
     }
   }, 100);
 
@@ -156,6 +159,7 @@ function Home({ location: { state } }) {
             // }}>
             <MovieItem
               image={movie.images.poster}
+              key={idx}
               onClick={() => {
                 setData({ movie, type: "movie" });
                 document.body.style.overflow = "hidden";
@@ -189,6 +193,7 @@ function Home({ location: { state } }) {
                 setData({ show, type: "show" });
                 document.body.style.overflow = "hidden";
               }}
+              key={idx}
             >
               <MovieTitle>
                 <h2>{htmlDecode(show.title, false)}</h2>
@@ -202,6 +207,11 @@ function Home({ location: { state } }) {
             // </Link>
           ))}
       </MovieHolder>
+      {isLoadingBottom && (
+        <BottomLoading> 
+          Loading ...
+        </BottomLoading>
+      )}
     </Wrapper>
   );
 }

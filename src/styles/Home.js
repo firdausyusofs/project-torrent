@@ -148,3 +148,20 @@ export const NoResultHolder = styled.div`
         font-weight: 600;
     }
 `
+
+export const BottomLoading = styled.div`
+  background-color: rgba(255,255,255,.4);
+  backdrop-filter: blur(7px);
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  font-size: 18px;
+  padding: 15px 40px;
+  border-radius: 10px;
+  cursor: default;
+`

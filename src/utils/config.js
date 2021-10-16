@@ -44,7 +44,6 @@ const prodUrl = "https://api.firdausyusof.com";
 const stagingUrl = "http://localhost:5000"
 
 export const GetData = (context, setContext, setIsLoading, isLoadMore = false, isFilter = false) => {
-    // console.log(context[`${type[context.isActive].slice(0, -1)}Page`])
     axios.get(`${prodUrl}/${type[context.isActive]}/${isFilter ? 1 : context[`${type[context.isActive].slice(0, -1)}Page`]}?sort=${context.sort}&genre=${context.genre}&keywords=${context.search ? context.search : ''}`, {
         headers: {
             'content-type': 'application/json',
@@ -69,9 +68,9 @@ export const GetData = (context, setContext, setIsLoading, isLoadMore = false, i
     
             setContext(state => ({...state, [type[context.isActive]]: data, [`${type[context.isActive].slice(0, -1)}Page`]: state[`${type[context.isActive].slice(0, -1)}Page`]+1}))
         } else {
-            setIsLoading(false)
             setContext(state => ({...state, [type[context.isActive]]: res.data.data, [`${type[context.isActive].slice(0, -1)}Page`]: isFilter ? 1 : state[`${type[context.isActive].slice(0, -1)}Page`]+1}))
         }
+        setIsLoading(false)
     })
     .catch(err => {
         setIsLoading(false)
