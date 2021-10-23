@@ -2,6 +2,7 @@
 const {app, BrowserWindow, ipcMain} = require('electron')
 const path = require('path')
 const WebTorrent = require('webtorrent')
+const PouchDB = require('pouchdb-node')
 const spawn = require('child_process').spawn
 const vlcCommand = require('vlc-command')
 const isDev = require('electron-is-dev')
@@ -10,6 +11,7 @@ const fs = require('fs');
 const os = require('os')
 
 var client = new WebTorrent()
+var db = new PouchDB('flashx')
 
 require('@electron/remote/main').initialize()
 
@@ -46,13 +48,36 @@ function createWindow () {
 
   mainWindow.setMenuBarVisibility(false)
 
+  var settings = {
+    _id: "settings",
+    theme: "light",
+    path: TMP,
+  }
+
+  db.put(settings, (err, result) => {
+    if (!err)
+      console.log("Successfully added settings")
+  })
+
+
   mainWindow.webContents.on('did-finish-load', () => {
+    
     if (loadingScreen != null) {
       loadingScreen.close();
       loadingScreen = null
     }
-    mainWindow.show();
+
     mainWindow.webContents.send('platform:info', process.platform)
+
+    db.get('settings').then(doc => {
+      console.log(doc)
+      mainWindow.webContents.send('settings:load', doc)
+    }).catch(err => {
+      console.log(err)
+    })
+
+    mainWindow.show();
+
   })
 
   // mainWindow.webContents.send('start', 'lala')
@@ -92,6 +117,14 @@ autoUpdater.on('error', (err) => {
 autoUpdater.on('update-downloaded', (info) => {
   autoUpdater.quitAndInstall();  
 });
+
+ipcMain.on('settings:update', (evt, args) => {
+  db.get('settings').then(doc => {
+    doc[args.key] = args.value
+    db.put(doc)
+  })
+  console.log("Settings updated")
+})
 
 ipcMain.on('start:torent', (evt, args) => {
   if (args !== undefined) {

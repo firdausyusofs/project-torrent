@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { HashRouter as Router, Route, Switch } from "react-router-dom";
 
 import "./styles/App.sass";
@@ -15,19 +15,29 @@ import { ThemeProvider } from "styled-components";
 
 import { lightTheme, darkTheme, GlobalStyles } from "./components/Theme"
 
+const ipcRenderer = window.require("electron").ipcRenderer;
+
 function App() {
-  const [context, setContext] = useState({
-    movies: [],
-    shows: [],
-    isActive: 0,
-    moviePage: 1,
-    showPage: 1,
-    sort: "Trending",
-    genre: "All",
-    search: false,
-    theme: "dark",
-    path: ""
-  });
+    const [settings, setSettings] = useState({})
+
+    const [context, setContext] = useState({
+      movies: [],
+      shows: [],
+      isActive: 0,
+      moviePage: 1,
+      showPage: 1,
+      sort: "Trending",
+      genre: "All",
+      search: false,
+      theme: "",
+      path: ""
+    });
+
+    useEffect(() => {
+      ipcRenderer.on('settings:load', (evt, args) => {
+        setContext(state => ({...state, ["theme"]: args.theme, ["path"]: args.path}))
+      })
+    }, [])
 
   return (
     <MovieContext.Provider value={[context, setContext]}>
