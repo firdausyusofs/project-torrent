@@ -38,8 +38,8 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "electron:serve": "concurrently -k \"cross-env BROWSER=none yarn start\" \"yarn electron:start\"",
-    "electron:build": "yarn build && electron-builder -wml --x64 -c.extraMetadata.main=build/main.js",
-    "electron:publish": "yarn build && electron-builder -wml --x64 -p always -c.extraMetadata.main=build/main.js",
+    "electron:build": "yarn build && electron-builder -wl --x64 -c.extraMetadata.main=build/main.js",
+    "electron:publish": "yarn build && electron-builder -wl --x64 -p always -c.extraMetadata.main=build/main.js",
     "electron:start": "wait-on tcp:3000 && electron ."
   },
   "eslintConfig": {
