@@ -73,6 +73,10 @@ export const MovieTopDetails = styled.div`
       align-items: center;
       justify-content: space-between;
       margin-bottom: 20px;
+
+      .top-details-inner {
+        display: flex;
+      }
     }
 `
 
@@ -111,6 +115,7 @@ export const TrailerButton = styled.div`
     border-radius: 30px;
     cursor: pointer;
     transition: all 0.25s ease-in-out;
+    margin-left: 10px;
 
     h3 {
         color: ${props => props.theme.color};
@@ -293,14 +298,15 @@ export const MovieQualityToggle = styled.p`
 `
 
 export const EpisodesHolder = styled.div`
+    margin: 20px;
     // min-width: 100%:
     // flex-basis: 30%;
-    width: 100%;
+    width: calc(100% - 40px);
     // height: 100vh;
-    height: 100%;
+    height: calc(100% - 40px);
     // background: #f5f5f5;
     background: ${props => props.theme.episode};
-    backdrop-filter: blur(10px);
+    backdrop-filter: blur(30px);
     overflow: auto;
     z-index: 500;
     position: absolute;
@@ -310,6 +316,7 @@ export const EpisodesHolder = styled.div`
     flex-direction: column;
     padding: 30px;
     transition: all 0.25s ease-in-out;
+    border-radius: 30px;
 
     ${props => !props.isActive ? `
         opacity: 0;
@@ -390,7 +397,7 @@ export const EpisodeList = styled.div`
 
 export const Episode = styled.div`
     padding: 10px 15px;
-    background: ${props => props.theme.body};
+    background: ${props => `rgba(${props.theme.bodyRGB}, .4)`};
     display: flex;
     align-items: center;
     width: 100%;
@@ -409,8 +416,9 @@ export const Episode = styled.div`
 
     .circle {
         width: 30px;
+        min-width: 30px;
         height: 30px;
-        background: ${props => props.isActive ? "rgb(227, 64, 62)" : props.theme.circle};
+        background: ${props => props.isActive ? "rgba(227, 64, 62, .6)" : `rgba(${props.theme.bodyRGB}, .3)`};
         border-radius: 100%;
         margin-right: 10px;
         display: flex;

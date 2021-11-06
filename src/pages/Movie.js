@@ -186,12 +186,20 @@ function Movie({history, ipcRenderer, shell, data: state, back}) {
                               <FaArrowLeft color="rgb(184, 186, 185)" />
                               <h3>Back</h3>
                           </MovieBackButton>
-                          <TrailerButton isPlay={false} onClick={() => state[state.type].trailer && shell.openExternal(state[state.type].trailer)}>
-                              <span>
-                                  <FaPlay color="rgb(184, 186, 185)" />
-                                  <h3>Play Trailer</h3>
-                              </span>
-                          </TrailerButton>
+                          <div className="top-details-inner">
+                            {state.type === "show" && <TrailerButton isPlay={false} onClick={() => setIsEpisodeListActive(state => !state)} isActive={isEpisodeListActive}>
+                                <span>
+                                    <FaListUl color="rgb(184, 186, 185)" />
+                                    <h3>Episodes</h3>
+                                </span>
+                            </TrailerButton>}
+                            {state.type === "movie" && <TrailerButton isPlay={false} onClick={() => state[state.type].trailer && shell.openExternal(state[state.type].trailer)}>
+                                <span>
+                                    <FaPlay color="rgb(184, 186, 185)" />
+                                    <h3>Play Trailer</h3>
+                                </span>
+                            </TrailerButton>}
+                          </div>
                         </div>
                         <MovieDetailInner>
                             <h1>{htmlDecode(state[state.type].title)}</h1>
@@ -211,6 +219,12 @@ function Movie({history, ipcRenderer, shell, data: state, back}) {
                             <p>{state.type === "movie" ? state[state.type].synopsis : show.synopsis}</p>
                         </MovieDetailInner>
                     </MovieTopDetails>
+                    {state.type === "show" && <MovieQualityToggleHolder>
+                      {Object.keys(show).length > 0 && Object.keys(getQuality().torrents).sort((a, b) => a.slice(0, -1) - b.slice(0, -1)).map((quality, idx) => {
+                          if (quality !== "0")
+                            return <MovieQualityToggle key={idx} isActive={isActive === idx-1} onClick={() => setIsActive(idx-1)}>{quality}</MovieQualityToggle>
+                      })}
+                    </MovieQualityToggleHolder>}
                     {state.type === "movie" && <MovieQualityToggleHolder>
                       {Object.keys(state[state.type].torrents.en).sort((a, b) => a.slice(0, -1) - b.slice(0, -1)).map((k, i) => (
                           <MovieQualityToggle key={i} isActive={isActive === i} onClick={() => setIsActive(i)}>{k}</MovieQualityToggle>
@@ -227,16 +241,16 @@ function Movie({history, ipcRenderer, shell, data: state, back}) {
                             {/* <div className="circle selector">
                                 <FaChevronUp color="#333" size={20} />
                             </div> */}
-                            {state.type === "show" && <QualitySelector>
+                            {/*state.type === "show" && <QualitySelector>
                                 <MovieQualityToggleHolder>
-                                    {Object.keys(show).length > 0 && Object.keys(getQuality().torrents).sort((a, b) => a.slice(0, -1) - b.slice(0, -1)).map((quality, idx) => {
+                                   {Object.keys(show).length > 0 && Object.keys(getQuality().torrents).sort((a, b) => a.slice(0, -1) - b.slice(0, -1)).map((quality, idx) => {
                                         if (quality !== "0")
                                             return <MovieQualityToggle key={idx} isActive={isActive === idx-1} onClick={(e) => {e.stopPropagation(); setIsActive(idx-1)}}>{quality}</MovieQualityToggle>
                                     })}
                                 </MovieQualityToggleHolder>
-                            </QualitySelector>}
+                            </QualitySelector>*/}
                         </MovieButton>
-                        {state.type === "show" && (
+                        {/*{state.type === "show" && (
                             <MovieButton isPlay={false} onClick={() => setIsEpisodeListActive(state => !state)} isActive={isEpisodeListActive}>
                                 <span>
                                     <div className="circle">
@@ -245,7 +259,7 @@ function Movie({history, ipcRenderer, shell, data: state, back}) {
                                     <h3>All Episodes</h3>
                                 </span>
                             </MovieButton>
-                        )}
+                        )}*/}
                         <MovieButton isDisable={true} isPlay={false}>
                             <span>
                                 <div className="circle">
@@ -269,7 +283,7 @@ function Movie({history, ipcRenderer, shell, data: state, back}) {
                                 ))}
                             </SeasonDropdown>
                         </SeasonTitle>
-                        <FaTimes size={25} onClick={() => setIsEpisodeListActive(false)} />
+                        <FaTimes size={25} color="#aaa" onClick={() => setIsEpisodeListActive(false)} />
                     </TopBarEpisode>
                     <EpisodeList>
                         {Object.keys(show).length > 0 && getEpisodesForSeason(selectedSeasonDropdown).map((episode, idx) => (

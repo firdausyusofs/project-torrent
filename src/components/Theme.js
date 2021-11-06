@@ -29,7 +29,7 @@ export const darkTheme = {
     backHighlight: "#111",
     backShadow: "#222",
     circle: "#292929",
-    episode: "rgba(12,12,12,.7)",
+    episode: "rgba(12,12,12,.3)",
     button: "rgba(255,255,255,.05)"
 }
 
