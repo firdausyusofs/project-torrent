@@ -24,7 +24,8 @@ import {
     SeasonDropdown,
     EpisodeList,
     Episode,
-    QualitySelector
+    QualitySelector,
+    TrailerButton
 } from "../styles/Movie"
 
 import MovieContext from "../utils/Context"
@@ -176,13 +177,22 @@ function Movie({history, ipcRenderer, shell, data: state, back}) {
             {isPlaying && Math.round(downloadPercentage) < 5 && <TorrentDetail stopTorrent={stopTorrent} isConnecting={isConnecting} downloadPercentage={downloadPercentage} />}
             {!isLoading && (
             <>
+                <div className="background-holder" style={{backgroundImage: `url(${state[state.type].images.poster})`}}></div>
                 <MovieDetails>
                     <MovieTopDetails>
                         {/* <MovieBackButton onClick={() => history.push({pathname: '/', state: {isBack: true}})}> */}
-                        <MovieBackButton onClick={() => back()}>
-                            <FaArrowLeft color="rgb(184, 186, 185)" />
-                            <h3>Back</h3>
-                        </MovieBackButton>
+                        <div className="top-details-bar">
+                          <MovieBackButton onClick={() => back()}>
+                              <FaArrowLeft color="rgb(184, 186, 185)" />
+                              <h3>Back</h3>
+                          </MovieBackButton>
+                          <TrailerButton isPlay={false} onClick={() => state[state.type].trailer && shell.openExternal(state[state.type].trailer)}>
+                              <span>
+                                  <FaPlay color="rgb(184, 186, 185)" />
+                                  <h3>Play Trailer</h3>
+                              </span>
+                          </TrailerButton>
+                        </div>
                         <MovieDetailInner>
                             <h1>{htmlDecode(state[state.type].title)}</h1>
                             <MovieInfo>
@@ -201,6 +211,11 @@ function Movie({history, ipcRenderer, shell, data: state, back}) {
                             <p>{state.type === "movie" ? state[state.type].synopsis : show.synopsis}</p>
                         </MovieDetailInner>
                     </MovieTopDetails>
+                    {state.type === "movie" && <MovieQualityToggleHolder>
+                      {Object.keys(state[state.type].torrents.en).sort((a, b) => a.slice(0, -1) - b.slice(0, -1)).map((k, i) => (
+                          <MovieQualityToggle key={i} isActive={isActive === i} onClick={() => setIsActive(i)}>{k}</MovieQualityToggle>
+                      ))}
+                    </MovieQualityToggleHolder>}
                     <MovieButtonHolder>
                         <MovieButton isPlay={true} onClick={playTorrent}>
                             <span>
@@ -231,19 +246,6 @@ function Movie({history, ipcRenderer, shell, data: state, back}) {
                                 </span>
                             </MovieButton>
                         )}
-                        {state.type === "movie" && <MovieQualityToggleHolder>
-                            {Object.keys(state[state.type].torrents.en).sort((a, b) => a.slice(0, -1) - b.slice(0, -1)).map((k, i) => (
-                                <MovieQualityToggle key={i} isActive={isActive === i} onClick={() => setIsActive(i)}>{k}</MovieQualityToggle>
-                            ))}
-                        </MovieQualityToggleHolder>}
-                        <MovieButton isPlay={false} onClick={() => state[state.type].trailer && shell.openExternal(state[state.type].trailer)}>
-                            <span>
-                                <div className="circle">
-                                    <FaPlay color="rgb(184, 186, 185)" />
-                                </div>
-                                <h3>Play Trailer</h3>
-                            </span>
-                        </MovieButton>
                         <MovieButton isDisable={true} isPlay={false}>
                             <span>
                                 <div className="circle">

@@ -2,12 +2,23 @@ import styled from "styled-components"
 
 export const MovieHolder = styled.div`
     display: flex;
-    max-height: calc(100vh - 100px);
+    max-height: calc(100vh - 108px);
     position: fixed;
     background: ${props => props.theme.body};
     z-index: 1000;
-    top: 100px;
+    top: 108px;
     left: 0;
+
+    .background-holder {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: -1;
+      background-position: center;
+      background-size: cover;
+    }
 `
 
 export const MovieDetails = styled.div`
@@ -18,12 +29,14 @@ export const MovieDetails = styled.div`
     flex-direction: column;
     justify-content: space-between;
     max-height: calc(100vh - 100px);
-    animation-name: fade-in;
+    // animation-name: fade-in;
     animation-duration: 0.5s;
     // animation-delay: 0.5s;
     animation-timing-function: ease-in;
     animation-fill-mode: forwards;
-    opacity: 0;
+    // opacity: 0;
+    background-color: ${props => `rgba(${props.theme.bodyRGB}, .6)`};
+    backdrop-filter: blur(30px);
     
     h1 {
         font-size: 3em;
@@ -32,7 +45,7 @@ export const MovieDetails = styled.div`
     }
 
     p {
-        color: rgb(134, 134, 134);
+        color: ${props => props.theme.color};
     }
 
     @keyframes fade-in {
@@ -52,6 +65,15 @@ export const MovieTopDetails = styled.div`
     max-height: 100%;
     align-items: flex-start;
     flex-grow: 1;
+
+    .top-details-bar {
+      width: 100%;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
 `
 
 export const MovieDetailInner = styled.div`
@@ -83,20 +105,46 @@ export const MovieImage = styled.img`
     }
 `
 
+export const TrailerButton = styled.div`
+    padding: 10px 15px;
+    background: ${props => `rgba(${props.theme.bodyRGB}, 0.3)`};
+    border-radius: 30px;
+    cursor: pointer;
+    transition: all 0.25s ease-in-out;
+
+    h3 {
+        color: ${props => props.theme.color};
+        font-size: 15px;
+        margin-left: 10px;
+        font-weight: 500;
+    }
+
+    span {
+        display: flex;
+        align-items: center;
+    }
+
+    &:hover {
+        box-shadow: 0 0 15px ${props => props.theme.backShadow};
+        background: ${props => props.theme.backHighlight};
+    }
+`
+
 export const MovieBackButton = styled.div`
     display: flex;
-    margin-bottom: 20px;
     cursor: pointer;
     width: auto;
     border-radius: 30px;
     align-items: center;
-    padding: 15px 20px;
-    background: ${props => props.theme.back};
+    padding: 10px 15px;
+    background: ${props => `rgba(${props.theme.bodyRGB}, 0.4)`};
     transition: all 0.25s ease-in-out;
 
     h3 {
         margin-left: 15px;
         color: ${props => props.theme.color};
+        font-weight: 500;
+        font-size: 15px;
     }
 
     &:hover {
@@ -156,8 +204,8 @@ export const QualitySelector = styled.div`
 `
 
 export const MovieButton = styled.div`
-    padding: 20px 25px;
-    background: ${props => props.theme.back};
+    padding: 15px 25px;
+    background: ${props => `rgba(${props.theme.bodyRGB}, 0.4)`};
     transition: all 0.25s ease-in-out;
     border-radius: 10px;
     opacity: ${props => props.isDisable ? 0.2 : 1};
@@ -190,10 +238,10 @@ export const MovieButton = styled.div`
         margin-left: 10px;
         font-weight: 500;
     }
-
+   
     &:hover {
-        box-shadow: 0 0 15px ${props => props.theme.backShadow};
-        background: ${props => props.theme.backHighlight};
+        ${props => props.isDisable ? '' : `box-shadow: 0 0 15px ${props.theme.backShadow}`};
+        background: ${props => props.isDisable ? '' : props.theme.backHighlight};
 
         ${QualitySelector} {
             opacity: 1;
@@ -210,19 +258,26 @@ export const MovieButton = styled.div`
 
 export const MovieQualityToggleHolder = styled.div`
     display: flex;
+    max-width: 100%;
+    margin-bottom: -20px;
+    //flex-wrap: wrap;
+    overflow-x: auto;
+    //grid-template-columns: 1fr 1fr 1fr;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-end;
 `
 
 export const MovieQualityToggle = styled.p`
     padding: 10px 15px;
+    text-align: center;
     margin-right: 10px;
-    background: ${props => props.isActive ? 'rgb(227, 64, 62)' : ''};
+    background: ${props => props.isActive ? 'rgba(227, 64, 62, .8)' : `rgba(${props.theme.bodyRGB}, .2)`};
     color: ${props => props.isActive ? '#fff' : props.theme.color} !important;
     border-radius: 30px;
     cursor: pointer;
     font-weight: 600;
     transition: all 0.25s ease-in-out;
+    //border: 1px solid rgba(255, 255, 255, .2);
 
     ${props => !props.isActive && 
         `&:hover {

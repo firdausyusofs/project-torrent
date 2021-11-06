@@ -2,6 +2,7 @@ import { createGlobalStyle } from "styled-components"
 
 export const lightTheme = {
     body: "#fff",
+    bodyRGB: "255, 255, 255",
     header: "rgb(227, 64, 62)",
     color: "rgb(31, 33, 32)",
     dropdown: "#e9e9e9",
@@ -18,6 +19,7 @@ export const lightTheme = {
 
 export const darkTheme = {
     body: "#111",
+    bodyRGB: "17, 17, 17",
     header: "#882625",
     color: "rgba(255,255,255,.85)",
     dropdown: "#292929",
