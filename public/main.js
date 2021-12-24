@@ -1,7 +1,9 @@
 // Modules to control application life and create native browser window
 const {app, BrowserWindow, ipcMain} = require('electron')
 const path = require('path')
+const pathResolve = require('path').resolve
 const WebTorrent = require('webtorrent')
+const mkdirp = require('mkdirp')
 const PouchDB = require('pouchdb-node')
 const spawn = require('child_process').spawn
 const vlcCommand = require('vlc-command')
@@ -11,7 +13,36 @@ const fs = require('fs');
 const os = require('os')
 
 var client = new WebTorrent()
-var db = new PouchDB('flashx')
+// PouchDB.plugin(require('pouchdb-adapter-leveldb')).defaults({prefix: ".db/"})
+var db = new PouchDB('db', {prefix: "/tmp/flashx/"})
+
+console.log(pathResolve('/tmp/flashx'))
+
+db.info()
+.catch(function (error) {
+  if (error.name === 'OpenError') {
+    var path = db.__opts.prefix
+    // console.log(pathResolve(path))
+
+    return new Promise(function (resolve, reject) {
+      mkdirp("/tmp/flashx").catch(function (error) {
+        if (error) {
+          return reject(error)
+        }
+
+        resolve()
+      })
+    })
+
+    .then(function () {
+      console.log("here")
+      // reusing the db instance from above does not work for me
+      return new state.PouchDB('flashx').info()
+    })
+  }
+
+  throw error
+})
 
 require('@electron/remote/main').initialize()
 

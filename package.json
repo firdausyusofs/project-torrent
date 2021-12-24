@@ -1,6 +1,6 @@
 {
   "name": "flashx",
-  "version": "1.0.6",
+  "version": "1.1.1",
   "private": true,
   "repository": {
     "type": "git",
@@ -16,7 +16,10 @@
     "electron-is-dev": "^2.0.0",
     "electron-updater": "^4.3.9",
     "lodash.debounce": "^4.0.8",
+    "mkdirp": "^1.0.4",
     "popcorn-api": "^1.1.1",
+    "pouchdb-adapter-leveldb": "^7.2.2",
+    "pouchdb-adapter-memory": "^7.2.2",
     "pouchdb-node": "^7.2.2",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
@@ -36,9 +39,10 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
+    "electron:st": "electron .",
     "eject": "react-scripts eject",
     "electron:serve": "concurrently -k \"cross-env BROWSER=none yarn start\" \"yarn electron:start\"",
-    "electron:build": "yarn build && electron-builder -wl --x64 -c.extraMetadata.main=build/main.js",
+    "electron:build": "yarn build && electron-builder -m --arm64 -c.extraMetadata.main=build/main.js",
     "electron:publish": "yarn build && electron-builder -wl --x64 -p always -c.extraMetadata.main=build/main.js",
     "electron:start": "wait-on tcp:3000 && electron ."
   },
@@ -93,7 +97,7 @@
     "concurrently": "^5.3.0",
     "cross-env": "^7.0.3",
     "electron": "^11.2.1",
-    "electron-builder": "^22.13.1",
-    "wait-on": "^5.2.1"
+    "electron-builder": "^22.14.5",
+    "wait-on": "^6.0.0"
   }
 }
