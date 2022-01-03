@@ -38,7 +38,7 @@ function Header({history, location}) {
         <HeaderHolder>
             <HeaderTitleHolder>
                 <HeaderTitle>FlashX</HeaderTitle>
-                {platform === "windows" && (
+                {platform === "win32" && (
                   <HeaderButtonHolder>
                       <HeaderButton onClick={() => {
                           const window = remote.getCurrentWindow();

@@ -1,6 +1,6 @@
 {
   "name": "flashx",
-  "version": "1.1.1",
+  "version": "1.1.0",
   "private": true,
   "repository": {
     "type": "git",
@@ -42,8 +42,8 @@
     "electron:st": "electron .",
     "eject": "react-scripts eject",
     "electron:serve": "concurrently -k \"cross-env BROWSER=none yarn start\" \"yarn electron:start\"",
-    "electron:build": "yarn build && electron-builder -m --arm64 -c.extraMetadata.main=build/main.js",
-    "electron:publish": "yarn build && electron-builder -wl --x64 -p always -c.extraMetadata.main=build/main.js",
+    "electron:build": "yarn build && electron-builder -w -c.extraMetadata.main=build/main.js",
+    "electron:publish": "yarn build && electron-builder -w --x64 -p always -c.extraMetadata.main=build/main.js",
     "electron:start": "wait-on tcp:3000 && electron ."
   },
   "eslintConfig": {
@@ -57,7 +57,11 @@
     "appId": "com.fy.flashx",
     "productName": "FlashX",
     "publish": [
-      "github"
+      {
+        "provider": "github",
+        "owner": "firdausyusofs",
+        "repo": "project-torrent"
+      }
     ],
     "files": [
       "dist/**/*",
